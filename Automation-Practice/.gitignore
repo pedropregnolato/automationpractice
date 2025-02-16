@@ -2,7 +2,7 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
-!**/src/test/java/pl/automationpractice/SensitiveData.java
+/src/test/java/pl/automationpractice/SensitiveData.java
 
 ### IntelliJ IDEA ###
 .idea/modules.xml
