@@ -15,7 +15,7 @@ import java.time.Duration;
 public class LoginPageTests {
 
     private WebDriver navegador;
-    private String url = "https://www.automationpractice.pl/index.php";
+    private final String url = "https://www.automationpractice.pl/index.php";
     private HomePage homePage;
     private LoginPage loginPage;
     private SensitiveData sensitiveData;
@@ -41,20 +41,11 @@ public class LoginPageTests {
     @DisplayName("Validar login usuário com dados válidos")
     public void validarLogin() {
 
-        //acessar o site
-        homePage.accessUrlHome(url);
-
-        //acessar tela login
-        homePage.acessarTelaLogin();
-
-        //acessar campo Email address
-        loginPage.campoEmail(sensitiveData.email);
-
-        //acessar campo Password
-        loginPage.campoPassword(sensitiveData.password);
-
-        //clicar no Sign in
-        loginPage.botaoSignIn();
+        homePage.accessUrlHome(url);  //acessar o site
+        homePage.acessarTelaLogin();  //acessar tela login
+        loginPage.campoEmail(sensitiveData.email);  //acessar campo Email address
+        loginPage.campoPassword(sensitiveData.password);  //acessar campo Password
+        loginPage.botaoSignIn();  //clicar no Sign in
 
         //validar login com sucesso
         String welcomeAccount = navegador.findElement(By.className("info-account")).getText();
@@ -62,22 +53,52 @@ public class LoginPageTests {
 
         //voltar para homepage
         //loginPage.voltarHomePage();
-
     }
 
     @Test
     @DisplayName("Validar login usuário com dados inválidos")
     public void validarLoginDadosIncorretos() {
 
-        homePage.accessUrlHome(url);
-        homePage.acessarTelaLogin();
-        loginPage.campoEmail(sensitiveData.wrongEmail);
-        loginPage.campoPassword(sensitiveData.wrongPassword);
-        loginPage.botaoSignIn();
+        homePage.accessUrlHome(url);  //acessar o site
+        homePage.acessarTelaLogin();  //acessar tela login
+        loginPage.campoEmail(sensitiveData.wrongEmail);  //acessar campo Email address
+        loginPage.campoPassword(sensitiveData.wrongPassword);  //acessar campo Password
+        loginPage.botaoSignIn();  //clicar no Sign in
 
+        //validar login sem sucesso - utilizando xpath para validar mensagem de erro "Authentication failed."
         String falhaLogin = navegador.findElement(By.xpath("//li[text()=\"Authentication failed.\"]")).getText();
         Assertions.assertEquals("Authentication failed.", falhaLogin);
     }
+
+    @Test
+    @DisplayName("Validar login campo email invalido")
+    public void validarLoginEmailInvalido() {
+        homePage.accessUrlHome(url);
+        homePage.acessarTelaLogin();
+        loginPage.campoEmail("fbHBF");
+        loginPage.campoPassword(sensitiveData.password);
+        loginPage.botaoSignIn();
+
+        //validar login sem sucesso - utilizando xpath para validar mensagem de erro "Invalid email address."
+        String falhaLogin = navegador.findElement(By.xpath("//li[text()=\"Invalid email address.\"]")).getText();
+        Assertions.assertEquals("Invalid email address.", falhaLogin);
+
+    }
+
+
+    @Test
+    @DisplayName("Validar login usuário sem preencher nenhum campo")
+    public void validarLoginSemPreencher() {
+
+        homePage.accessUrlHome(url);
+        homePage.acessarTelaLogin();
+        loginPage.botaoSignIn();
+
+        //validar login sem sucesso - utilizando xpath para validar mensagem de erro "An email address required."
+        String falhaLogin = navegador.findElement(By.xpath("//li[text()=\"An email address required.\"]")).getText();
+        Assertions.assertEquals("An email address required.", falhaLogin);
+    }
+
 
     @AfterEach
     public void tearDown() {
