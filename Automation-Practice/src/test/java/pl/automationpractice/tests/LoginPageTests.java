@@ -34,7 +34,6 @@ public class LoginPageTests {
         loginPage = new LoginPage(navegador);
         //instanciando dadossensiveis como objeto
         sensitiveData = new SensitiveData();
-
     }
 
     @Test
@@ -58,6 +57,7 @@ public class LoginPageTests {
     @Test
     @DisplayName("Validar login usuário com dados inválidos")
     public void validarLoginDadosIncorretos() {
+
 
         homePage.accessUrlHome(url);  //acessar o site
         homePage.acessarTelaLogin();  //acessar tela login

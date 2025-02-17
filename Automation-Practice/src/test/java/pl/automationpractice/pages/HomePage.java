@@ -18,5 +18,4 @@ public class HomePage extends BasePage {
         navegador.findElement(By.className("login")).click();
     }
 
-
 }
